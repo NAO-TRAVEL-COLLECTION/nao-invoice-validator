@@ -45,7 +45,7 @@
   lockForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     lockError.hidden = true;
-    const password = passwordInput.value;
+    const password = passwordInput.value.trim();
     const ok = await verifyPassword(password);
     if (ok) {
       sessionStorage.setItem(STORAGE_KEY, password);
