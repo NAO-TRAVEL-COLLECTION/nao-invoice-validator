@@ -1,0 +1,13 @@
+{
+  "name": "nao-invoice-validator",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Validador de facturas (CFDI e invoices extranjeros) para NAO Travel Collection.",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "busboy": "^1.6.0",
+    "unpdf": "^1.8.1"
+  }
+}
