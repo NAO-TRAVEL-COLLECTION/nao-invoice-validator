@@ -63,69 +63,6 @@ h2 {
   color: var(--text-dim);
 }
 
-/* ---------- Lock screen ---------- */
-
-.lock-screen {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-}
-
-.lock-card {
-  width: 100%;
-  max-width: 380px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 2.25rem 2rem;
-  text-align: center;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
-}
-
-.lock-card .brand {
-  justify-content: center;
-  margin-bottom: 1.5rem;
-}
-
-.lock-card h1 {
-  font-size: 1.4rem;
-  margin-bottom: 0.4rem;
-}
-
-.lock-copy {
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  margin: 0 0 1.5rem;
-}
-
-#lock-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-#password-input {
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 0.75rem 1rem;
-  color: var(--text);
-  font-size: 0.95rem;
-}
-
-#password-input:focus {
-  outline: 2px solid var(--primary);
-  outline-offset: 1px;
-}
-
-.lock-error {
-  color: var(--bad);
-  font-size: 0.85rem;
-  margin: 0.9rem 0 0;
-}
-
 /* ---------- App shell ---------- */
 
 .topbar {

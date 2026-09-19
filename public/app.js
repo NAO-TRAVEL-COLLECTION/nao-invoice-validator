@@ -1,13 +1,4 @@
 (function () {
-  const STORAGE_KEY = 'nao_app_password';
-
-  const lockScreen = document.getElementById('lock-screen');
-  const app = document.getElementById('app');
-  const lockForm = document.getElementById('lock-form');
-  const passwordInput = document.getElementById('password-input');
-  const lockError = document.getElementById('lock-error');
-  const logoutBtn = document.getElementById('logout-btn');
-
   const dropzone = document.getElementById('dropzone');
   const fileInput = document.getElementById('file-input');
   const queueSection = document.getElementById('queue');
@@ -19,53 +10,6 @@
   const globalError = document.getElementById('global-error');
 
   let selectedFiles = [];
-
-  // ---------- Auth ----------
-
-  function showApp() {
-    lockScreen.hidden = true;
-    app.hidden = false;
-  }
-
-  function showLock() {
-    app.hidden = true;
-    lockScreen.hidden = false;
-    passwordInput.value = '';
-    passwordInput.focus();
-  }
-
-  async function verifyPassword(password) {
-    const res = await fetch('/api/check-auth', {
-      method: 'POST',
-      headers: { 'x-app-password': password },
-    });
-    return res.ok;
-  }
-
-  lockForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    lockError.hidden = true;
-    const password = passwordInput.value.trim();
-    const ok = await verifyPassword(password);
-    if (ok) {
-      sessionStorage.setItem(STORAGE_KEY, password);
-      showApp();
-    } else {
-      lockError.hidden = false;
-    }
-  });
-
-  logoutBtn.addEventListener('click', () => {
-    sessionStorage.removeItem(STORAGE_KEY);
-    showLock();
-  });
-
-  const storedPassword = sessionStorage.getItem(STORAGE_KEY);
-  if (storedPassword) {
-    showApp();
-  } else {
-    showLock();
-  }
 
   // ---------- File selection ----------
 
@@ -140,15 +84,8 @@
     try {
       const res = await fetch('/api/validate', {
         method: 'POST',
-        headers: { 'x-app-password': sessionStorage.getItem(STORAGE_KEY) || '' },
         body: formData,
       });
-
-      if (res.status === 401) {
-        sessionStorage.removeItem(STORAGE_KEY);
-        showLock();
-        return;
-      }
 
       const data = await res.json();
 

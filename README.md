@@ -58,11 +58,12 @@ Ningún otro archivo debería necesitar edición para ajustar estas reglas.
 - Los PDFs se procesan **en memoria únicamente**; nunca se escriben a
   disco ni se guardan de forma permanente.
 - El texto extraído de los PDFs **nunca se incluye en logs**.
-- El acceso al formulario está protegido con una contraseña compartida
-  (variable de entorno `APP_PASSWORD`). No es un sistema de login
-  robusto — pensado solo como una barrera simple de acceso.
 - No se usa ningún servicio de IA ni se envían datos a terceros; toda la
   validación es local, determinística, por extracción de texto y reglas.
+- **El formulario no tiene ninguna protección de acceso** — cualquiera
+  con el link puede usarlo. Si en algún momento se necesita restringir el
+  acceso, se puede volver a agregar una contraseña simple o usar la
+  protección de despliegue de Vercel.
 
 ## Desarrollo local
 
@@ -72,31 +73,20 @@ npm install -g vercel   # si no lo tienes
 vercel dev
 ```
 
-Vercel te pedirá vincular el proyecto la primera vez. Crea un archivo
-`.env.local` (no se sube a git) con:
-
-```
-APP_PASSWORD=tu-contraseña-local
-```
-
-Abre `http://localhost:3000`.
+Vercel te pedirá vincular el proyecto la primera vez. Abre
+`http://localhost:3000`.
 
 ## Despliegue en Vercel
 
 1. Conecta el repositorio de GitHub a un proyecto nuevo en Vercel (o usa
    `vercel --prod` desde la CLI ya vinculada al proyecto).
-2. Configura la variable de entorno `APP_PASSWORD` en el dashboard del
-   proyecto (Settings → Environment Variables), o vía CLI:
-   ```bash
-   vercel env add APP_PASSWORD production
-   ```
-3. Despliega:
+2. Despliega:
    ```bash
    vercel --prod
    ```
 
-No hay paso de build: es HTML/CSS/JS estático (`public/`) + funciones
-serverless de Node (`api/`).
+No hay paso de build ni variables de entorno requeridas: es HTML/CSS/JS
+estático (`public/`) + funciones serverless de Node (`api/`).
 
 ## Estructura del proyecto
 
@@ -104,9 +94,7 @@ serverless de Node (`api/`).
 public/            Frontend estático (formulario, estilos, lógica de UI)
 api/                Funciones serverless (Vercel)
   validate.js         Procesa y valida los PDFs subidos
-  check-auth.js        Verifica la contraseña antes de mostrar la app
 lib/                Lógica de negocio, reutilizable y sin dependencias de Vercel
-  auth.js               Verificación de contraseña
   pdf-extract.js        Extracción de texto de PDF
   detect-type.js        Detección CFDI vs invoice extranjero
   validate-cfdi.js      Reglas de validación de CFDI

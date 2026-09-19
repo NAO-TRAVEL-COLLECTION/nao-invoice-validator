@@ -1,5 +1,4 @@
 const Busboy = require('busboy');
-const { isAuthorized } = require('../lib/auth');
 const { extractText } = require('../lib/pdf-extract');
 const { detectDocumentType } = require('../lib/detect-type');
 const { validateCFDI } = require('../lib/validate-cfdi');
@@ -81,11 +80,6 @@ async function processPdf(filename, buffer) {
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Método no permitido.' });
-    return;
-  }
-
-  if (!isAuthorized(req)) {
-    res.status(401).json({ error: 'No autorizado.' });
     return;
   }
 
