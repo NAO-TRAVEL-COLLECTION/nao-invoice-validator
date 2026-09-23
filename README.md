@@ -18,40 +18,56 @@ separado.
 ## ⚠️ Archivo que debes editar con los datos reales de la empresa
 
 **[`config/company-rules.js`](config/company-rules.js)** — ahí viven
-todos los valores específicos de NAO (marcados con `// TODO`):
+todos los valores específicos de NAO:
 
 - `NAO_RFC_VALIDOS` — RFC(s) de NAO como receptor autorizado.
-- `NAO_NOMBRES_VALIDOS` — razón(es) social(es) de NAO (para invoices
-  extranjeros que la referencian por nombre y no por RFC).
-- `REGIMENES_FISCALES_ACEPTADOS` — claves SAT de régimen fiscal.
-- `USOS_CFDI_VALIDOS` — claves de uso de CFDI aceptadas.
-- `CODIGOS_POSTALES_VALIDOS` — CP del domicilio fiscal de NAO.
-- `DIAS_MAXIMOS_ANTIGUEDAD` — plazo máximo en días entre la fecha de
-  emisión y hoy.
-- `MONTO_MAXIMO` — monto máximo permitido por factura (o `null` si no
-  hay límite).
+- `NAO_NOMBRES_VALIDOS` — razón(es) social(es) de NAO.
+- `REGIMENES_FISCALES_ACEPTADOS` — claves SAT de régimen fiscal aceptadas.
 
-Hasta que tu contador confirme estos valores, la app funcionará pero
-rechazará documentos por defecto en esos criterios (son placeholders).
+Ningún otro archivo debería necesitar edición para ajustar estos valores.
 
-Ningún otro archivo debería necesitar edición para ajustar estas reglas.
+## Reglas de validación
 
-## Cómo funciona la validación (y sus límites)
+### CFDI nacional
 
-- El **CFDI nacional** se valida buscando etiquetas típicas de la
-  representación impresa del CFDI (ej. "RFC Receptor", "Uso CFDI",
-  "Régimen Fiscal", "Fecha de Emisión", "Total"). Esto funciona bien con
-  los formatos más comunes de PDF de CFDI, pero puede variar entre
-  proveedores/facturadores.
-- El **invoice extranjero** no tiene un formato estandarizado, así que
-  la validación usa heurísticas (patrones de dirección, fecha, montos y
-  presencia del nombre/RFC de NAO). Es más permisiva por diseño, pero
-  también más propensa a falsos negativos con formatos poco comunes.
-- Si al probar con facturas reales detectas que algún patrón no se
-  reconoce bien, se puede ajustar la extracción en `lib/validate-cfdi.js`
-  y `lib/validate-invoice.js` sin tocar la configuración de negocio.
-- Este es un punto de partida pensado para iterar: cuando definas
-  requisitos más específicos, se ajustan estos archivos.
+Se aprueba solo si estos tres campos del **receptor** coinciden
+exactamente con los datos configurados de NAO:
+
+- RFC del receptor
+- Razón social del receptor (comparación insensible a
+  mayúsculas/acentos)
+- Régimen fiscal del receptor
+
+También es obligatorio que el documento tenga folio fiscal (UUID de
+timbrado) — sin eso no es un CFDI válido.
+
+Estos otros campos se extraen y se muestran en el resultado, pero
+**nunca causan un rechazo** (aparecen marcados como "informativo"):
+
+- RFC del emisor
+- Uso de CFDI (varía según el tipo de gasto, no hay una lista fija)
+- Método de pago (se muestra si es PUE/PPD, pero no bloquea)
+
+No hay límite de antigüedad (días) ni de monto máximo.
+
+### Invoice extranjero
+
+Se valida contra los elementos mínimos de la regla 2.7.1.14 de la RMF:
+nombre/razón social y domicilio del emisor, lugar y fecha de expedición,
+descripción del servicio o bienes, RFC o nombre de NAO como receptor, e
+importe total (sin límite de monto). No se valida retención de ISR ni
+vigencia del comprobante ante el SAT — ambas cosas quedan fuera de
+alcance de esta validación.
+
+### Límites conocidos de la extracción
+
+Al no existir un formato estandarizado para CFDIs impresos ni para
+invoices extranjeros, la extracción de campos usa patrones/etiquetas
+comunes (ej. "RFC Receptor", "Régimen Fiscal Receptor"). Esto funciona
+bien con los formatos más comunes, pero puede variar entre proveedores.
+Si detectas que algún patrón no se reconoce bien con facturas reales, se
+ajusta en `lib/validate-cfdi.js` y `lib/validate-invoice.js` sin tocar
+la configuración de negocio.
 
 ## Seguridad
 

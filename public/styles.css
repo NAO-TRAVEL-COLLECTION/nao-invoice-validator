@@ -358,6 +358,23 @@ h2 {
   color: var(--bad);
 }
 
+.check-icon.info {
+  background: rgba(124, 156, 255, 0.14);
+  color: var(--accent);
+  font-style: italic;
+}
+
+.info-tag {
+  font-weight: 500;
+  font-size: 0.72rem;
+  color: var(--accent);
+  background: rgba(124, 156, 255, 0.14);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  margin-left: 0.35rem;
+  vertical-align: middle;
+}
+
 .check-text .req {
   font-weight: 600;
 }

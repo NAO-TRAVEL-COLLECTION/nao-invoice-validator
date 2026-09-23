@@ -139,17 +139,19 @@
       const badgeText = r.aprobado ? 'APROBADA' : 'RECHAZADA';
 
       const checksHtml = r.checks
-        .map(
-          (c) => `
+        .map((c) => {
+          const iconClass = c.informativo ? 'info' : c.cumple ? 'ok' : 'bad';
+          const icon = c.informativo ? 'i' : c.cumple ? '✓' : '✕';
+          return `
         <div class="check-row">
-          <span class="check-icon ${c.cumple ? 'ok' : 'bad'}">${c.cumple ? '✓' : '✕'}</span>
+          <span class="check-icon ${iconClass}">${icon}</span>
           <div class="check-text">
-            <div class="req">${escapeHtml(c.requisito)}</div>
+            <div class="req">${escapeHtml(c.requisito)}${c.informativo ? ' <span class="info-tag">informativo</span>' : ''}</div>
             <div class="detail">${escapeHtml(c.detalle)}</div>
           </div>
         </div>
-      `
-        )
+      `;
+        })
         .join('');
 
       card.innerHTML = `
