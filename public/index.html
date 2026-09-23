@@ -10,35 +10,53 @@
 <link rel="stylesheet" href="styles.css" />
 
 <div id="app" class="app">
+  <div class="accent-bar"></div>
+
   <header class="topbar">
-    <div class="brand">
-      <span class="brand-mark">NAO<span class="brand-reg">®</span></span>
-      <span class="brand-sub">TRAVEL COLLECTION</span>
-    </div>
+    <img src="nao-logo.svg" alt="NAO Travel Collection" class="brand-logo" />
+    <span class="topbar-tag">Panel de cuentas por pagar</span>
   </header>
 
   <main class="main">
-    <section class="intro">
-      <h1>Validador de Facturas</h1>
+    <section class="hero">
+      <span class="eyebrow">Validación automática de facturas</span>
+      <h1>¿Esta factura cumple los requisitos para pago?</h1>
       <p>
-        Sube uno o varios PDFs de facturas. El sistema detecta automáticamente si es un
-        <strong>CFDI nacional</strong> o un <strong>invoice extranjero</strong> y valida cada uno
-        contra los requisitos configurados de NAO.
+        Sube uno o varios PDFs. El sistema detecta automáticamente si es un
+        <strong>CFDI nacional</strong> o un <strong>invoice extranjero</strong> y lo valida al
+        instante contra los requisitos configurados de NAO — sin revisión manual.
       </p>
+
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <span class="step-text">Sube uno o varios PDFs</span>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <span class="step-text">Se detecta el tipo de documento</span>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <span class="step-text">Recibes un veredicto claro por archivo</span>
+        </li>
+      </ol>
     </section>
 
     <section id="dropzone" class="dropzone">
       <input type="file" id="file-input" accept="application/pdf" multiple hidden />
       <div class="dropzone-inner">
-        <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
+        <span class="dropzone-icon-ring">
+          <svg class="dropzone-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
         <p class="dropzone-title">Arrastra tus PDFs aquí</p>
         <p class="dropzone-sub">o haz clic para seleccionar archivos (puedes elegir varios)</p>
       </div>
@@ -62,6 +80,11 @@
 
     <p id="global-error" class="global-error" hidden></p>
   </main>
+
+  <footer class="footer">
+    <img src="nao-logo.svg" alt="NAO Travel Collection" class="footer-logo" />
+    <p>Documento procesado en memoria — no se almacena ni se registra información fiscal.</p>
+  </footer>
 </div>
 
 <script src="app.js"></script>

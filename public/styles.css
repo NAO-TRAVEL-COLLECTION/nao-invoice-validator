@@ -41,64 +41,148 @@ h2 {
 
 /* ---------- Brand ---------- */
 
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 0.65rem;
+.accent-bar {
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 55%, var(--border) 100%);
 }
 
-.brand-mark {
-  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  font-weight: 700;
-  font-size: 1.5rem;
-  letter-spacing: 0.02em;
-  color: var(--text);
+.brand-logo {
+  height: 34px;
+  width: auto;
+  display: block;
 }
 
-.brand-reg {
-  font-size: 0.6em;
-  vertical-align: super;
-  font-weight: 400;
-}
-
-.brand-sub {
-  font-weight: 800;
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  color: var(--primary);
+.footer-logo {
+  height: 22px;
+  width: auto;
+  display: block;
+  opacity: 0.55;
 }
 
 /* ---------- App shell ---------- */
+
+body {
+  background-image: radial-gradient(circle at 15% 0%, var(--bg-soft) 0%, var(--bg) 45%);
+  background-attachment: fixed;
+}
 
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.5rem 2rem;
+  padding: 1.35rem 2rem;
   border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.topbar-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.8rem;
+  border-radius: 999px;
 }
 
 .main {
   max-width: 880px;
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 3rem 1.5rem 4rem;
 }
 
-.intro h1 {
-  font-size: 1.8rem;
-  margin-bottom: 0.6rem;
+.hero {
+  padding-bottom: 2.25rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  background: var(--neutral-tint);
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  margin-bottom: 0.85rem;
   color: var(--text);
+  max-width: 620px;
 }
 
-.intro p {
+.hero p {
   color: var(--text-dim);
   line-height: 1.6;
-  max-width: 640px;
+  max-width: 620px;
+  margin: 0 0 1.75rem;
 }
 
-.intro strong {
+.hero strong {
   color: var(--text);
   font-weight: 700;
+}
+
+.steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.step-num {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary-dark);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-text {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer p {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin: 0;
 }
 
 /* ---------- Buttons ---------- */
@@ -142,27 +226,38 @@ h2 {
 /* ---------- Dropzone ---------- */
 
 .dropzone {
-  margin-top: 2rem;
   border: 2px dashed var(--border);
   border-radius: var(--radius);
   background: var(--bg-soft);
   padding: 3rem 2rem;
   text-align: center;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .dropzone:hover,
 .dropzone.dragover {
   border-color: var(--primary);
   background: var(--neutral-tint);
+  box-shadow: 0 10px 30px rgba(30, 30, 28, 0.06);
+}
+
+.dropzone-icon-ring {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  margin-bottom: 1rem;
 }
 
 .dropzone-icon {
-  width: 40px;
-  height: 40px;
+  width: 24px;
+  height: 24px;
   color: var(--primary);
-  margin-bottom: 0.75rem;
 }
 
 .dropzone-title {
@@ -274,6 +369,12 @@ h2 {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
+  box-shadow: 0 1px 2px rgba(30, 30, 28, 0.04);
+  transition: box-shadow 0.15s ease;
+}
+
+.result-card:hover {
+  box-shadow: 0 8px 24px rgba(30, 30, 28, 0.08);
 }
 
 .result-summary {
@@ -418,7 +519,20 @@ h2 {
     padding: 1rem 1.25rem;
   }
 
+  .topbar-tag {
+    display: none;
+  }
+
   .main {
     padding: 1.75rem 1.1rem 3rem;
+  }
+
+  .hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .steps {
+    flex-direction: column;
+    gap: 0.75rem;
   }
 }
