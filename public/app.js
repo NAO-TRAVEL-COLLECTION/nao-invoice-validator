@@ -13,7 +13,33 @@
   const progressBad = document.getElementById('progress-bad');
   const globalError = document.getElementById('global-error');
 
+  const pdfModal = document.getElementById('pdf-modal');
+  const pdfModalTitle = document.getElementById('pdf-modal-title');
+  const pdfModalFrame = document.getElementById('pdf-modal-frame');
+  const pdfModalClose = document.getElementById('pdf-modal-close');
+  const pdfModalBackdrop = pdfModal.querySelector('.pdf-modal-backdrop');
+
   let selectedFiles = [];
+  let objectUrls = [];
+
+  // ---------- PDF preview modal ----------
+
+  function openPdfModal(url, name) {
+    pdfModalTitle.textContent = name;
+    pdfModalFrame.src = url;
+    pdfModal.hidden = false;
+  }
+
+  function closePdfModal() {
+    pdfModal.hidden = true;
+    pdfModalFrame.src = '';
+  }
+
+  pdfModalClose.addEventListener('click', closePdfModal);
+  pdfModalBackdrop.addEventListener('click', closePdfModal);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !pdfModal.hidden) closePdfModal();
+  });
 
   // ---------- File selection ----------
 
@@ -82,8 +108,9 @@
     validateBtn.disabled = true;
     validateBtn.textContent = 'Validando...';
 
+    const filesForThisRun = selectedFiles.slice();
     const formData = new FormData();
-    selectedFiles.forEach((file) => formData.append('files', file, file.name));
+    filesForThisRun.forEach((file) => formData.append('files', file, file.name));
 
     try {
       const res = await fetch('/api/validate', {
@@ -97,7 +124,7 @@
         throw new Error(data.error || 'Ocurrió un error al validar los archivos.');
       }
 
-      renderResults(data.resultados);
+      renderResults(data.resultados, filesForThisRun);
     } catch (err) {
       globalError.hidden = false;
       globalError.textContent = err.message;
@@ -113,9 +140,12 @@
     return 'Tipo no identificado';
   }
 
-  function renderResults(resultados) {
+  function renderResults(resultados, files) {
     resultsSection.hidden = false;
     resultsList.innerHTML = '';
+
+    objectUrls.forEach((url) => URL.revokeObjectURL(url));
+    objectUrls = [];
 
     const total = resultados.length;
     const aprobadas = resultados.filter((r) => r.aprobado).length;
@@ -127,21 +157,38 @@
     progressOk.style.width = `${total ? (aprobadas / total) * 100 : 0}%`;
     progressBad.style.width = `${total ? (rechazadas / total) * 100 : 0}%`;
 
-    resultados.forEach((r) => {
+    resultados.forEach((r, index) => {
       const card = document.createElement('div');
       card.className = 'result-card';
+
+      const file = files && files[index];
+      let pdfUrl = null;
+      if (file) {
+        pdfUrl = URL.createObjectURL(file);
+        objectUrls.push(pdfUrl);
+      }
+      const fileNameHtml = pdfUrl
+        ? `<button type="button" class="result-file-name">${escapeHtml(r.archivo)}</button>`
+        : `<div class="result-file-name">${escapeHtml(r.archivo)}</div>`;
 
       if (r.error) {
         card.innerHTML = `
           <div class="result-summary">
             <div class="result-file-info">
-              <div class="result-file-name">${escapeHtml(r.archivo)}</div>
+              ${fileNameHtml}
               <div class="result-doc-type">Error de procesamiento</div>
             </div>
             <span class="badge bad">RECHAZADA</span>
           </div>
           <div class="result-error">${escapeHtml(r.error)}</div>
         `;
+        const fileBtn = card.querySelector('button.result-file-name');
+        if (fileBtn) {
+          fileBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openPdfModal(pdfUrl, r.archivo);
+          });
+        }
         resultsList.appendChild(card);
         return;
       }
@@ -168,7 +215,7 @@
       card.innerHTML = `
         <div class="result-summary">
           <div class="result-file-info">
-            <div class="result-file-name">${escapeHtml(r.archivo)}</div>
+            ${fileNameHtml}
             <div class="result-doc-type">${docTypeLabel(r.tipoDocumento)}</div>
           </div>
           <span class="badge ${badgeClass}">${badgeText}</span>
@@ -179,6 +226,14 @@
       card.querySelector('.result-summary').addEventListener('click', () => {
         card.classList.toggle('open');
       });
+
+      const fileBtn = card.querySelector('button.result-file-name');
+      if (fileBtn) {
+        fileBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openPdfModal(pdfUrl, r.archivo);
+        });
+      }
 
       resultsList.appendChild(card);
     });
