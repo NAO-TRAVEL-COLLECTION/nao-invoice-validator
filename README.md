@@ -23,6 +23,7 @@ todos los valores específicos de NAO:
 - `NAO_RFC_VALIDOS` — RFC(s) de NAO como receptor autorizado.
 - `NAO_NOMBRES_VALIDOS` — razón(es) social(es) de NAO.
 - `REGIMENES_FISCALES_ACEPTADOS` — claves SAT de régimen fiscal aceptadas.
+- `CODIGOS_POSTALES_VALIDOS` — código(s) postal(es) del domicilio fiscal de NAO.
 
 Ningún otro archivo debería necesitar edición para ajustar estos valores.
 
@@ -30,16 +31,18 @@ Ningún otro archivo debería necesitar edición para ajustar estos valores.
 
 ### CFDI nacional
 
-Se aprueba solo si estos tres campos del **receptor** coinciden
-exactamente con los datos configurados de NAO:
+Se aprueba solo si se cumple todo lo siguiente:
 
-- RFC del receptor
-- Razón social del receptor (comparación insensible a
-  mayúsculas/acentos)
-- Régimen fiscal del receptor
-
-También es obligatorio que el documento tenga folio fiscal (UUID de
-timbrado) — sin eso no es un CFDI válido.
+- El documento tiene folio fiscal (UUID de timbrado) — sin eso no es un
+  CFDI válido.
+- No trae ninguna leyenda de cancelación.
+- RFC del receptor coincide con el de NAO.
+- Razón social del receptor coincide con la de NAO (comparación
+  insensible a mayúsculas/acentos).
+- Régimen fiscal del receptor coincide con el de NAO.
+- Código postal del receptor coincide con el de NAO.
+- La forma de pago **no** es "01 Efectivo" — un pago en efectivo no es
+  deducible, así que se rechaza automáticamente.
 
 Estos otros campos se extraen y se muestran en el resultado, pero
 **nunca causan un rechazo** (aparecen marcados como "informativo"):

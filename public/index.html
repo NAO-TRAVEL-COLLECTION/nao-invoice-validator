@@ -72,8 +72,20 @@
     <section id="results" class="results" hidden>
       <div class="results-header">
         <h2>Resultados</h2>
-        <div id="summary" class="summary"></div>
       </div>
+
+      <div id="summary" class="summary">
+        <div class="summary-stats">
+          <span class="stat">Subidos <strong id="stat-total">0</strong></span>
+          <span class="stat stat-ok">Aprobadas <strong id="stat-aprobadas">0</strong></span>
+          <span class="stat stat-bad">Rechazadas <strong id="stat-rechazadas">0</strong></span>
+        </div>
+        <div class="progress-bar">
+          <div id="progress-ok" class="progress-fill ok"></div>
+          <div id="progress-bad" class="progress-fill bad"></div>
+        </div>
+      </div>
+
       <div id="results-list" class="results-list"></div>
     </section>
 

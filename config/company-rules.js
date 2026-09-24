@@ -26,4 +26,10 @@ module.exports = {
    * Clave SAT: "601" = General de Ley Personas Morales.
    */
   REGIMENES_FISCALES_ACEPTADOS: ['601'],
+
+  /**
+   * Código(s) postal(es) del domicilio fiscal de NAO. Si NAO tiene más de
+   * un domicilio fiscal, agrega todos aquí.
+   */
+  CODIGOS_POSTALES_VALIDOS: ['11650'],
 };

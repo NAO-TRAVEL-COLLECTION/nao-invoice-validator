@@ -6,7 +6,11 @@
   const validateBtn = document.getElementById('validate-btn');
   const resultsSection = document.getElementById('results');
   const resultsList = document.getElementById('results-list');
-  const summaryEl = document.getElementById('summary');
+  const statTotal = document.getElementById('stat-total');
+  const statAprobadas = document.getElementById('stat-aprobadas');
+  const statRechazadas = document.getElementById('stat-rechazadas');
+  const progressOk = document.getElementById('progress-ok');
+  const progressBad = document.getElementById('progress-bad');
   const globalError = document.getElementById('global-error');
 
   let selectedFiles = [];
@@ -113,8 +117,15 @@
     resultsSection.hidden = false;
     resultsList.innerHTML = '';
 
+    const total = resultados.length;
     const aprobadas = resultados.filter((r) => r.aprobado).length;
-    summaryEl.textContent = `${aprobadas} de ${resultados.length} aprobadas`;
+    const rechazadas = total - aprobadas;
+
+    statTotal.textContent = total;
+    statAprobadas.textContent = aprobadas;
+    statRechazadas.textContent = rechazadas;
+    progressOk.style.width = `${total ? (aprobadas / total) * 100 : 0}%`;
+    progressBad.style.width = `${total ? (rechazadas / total) * 100 : 0}%`;
 
     resultados.forEach((r) => {
       const card = document.createElement('div');
